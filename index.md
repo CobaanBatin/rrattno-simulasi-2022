@@ -112,3 +112,106 @@ Periksa status layanan Nginx dengan perintah berikut:
 sudo systemctl status nginx
 ```
 
+Setting Mod Rewrite
+
+Buka file default.conf. Karena file tidak ada maka copy dari example.conf kemudian diedit
+
+```
+[centos@centos /]$ sudo vi /etc/nginx/conf.d/default.conf
+```
+
+Isi sebelumnya 
+
+```
+
+    location / {
+      try_files $uri $uri/ /index.php;
+    }
+```
+diganti menjadi
+
+```
+ location / {
+      root /usr/share/nginx/html;
+        index index.php index.html index.htm;
+    }
+```
+
+Install PHP-FPM
+
+Membutuhkan EPEL repository tapi sudah diinstall tadi di atas jadi langsung saja jalankan perintah
+
+```
+[centos@centos /]$ sudo yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+```
+
+Setelah selesai kemudian install paket yum-utils. Jalankan perintah
+
+```
+[centos@centos /]$ sudo yum install yum-utils
+```
+
+Karena akan menggunakan php 7.3 7.4 dan 8.0 maka jalankan perintah
+
+```
+[centos@centos /]$ sudo yum-config-manager --enable remi-php73
+```
+```
+[centos@centos /]$ sudo yum-config-manager --enable remi-php74
+```
+```
+[centos@centos /]$ sudo yum-config-manager --enable remi-php80
+```
+
+Setelah selesai lanjutkan installasi ekstensi yang perlu
+```
+[centos@centos /]$ sudo yum -y install php php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json php-pdo php-pecl-apcu php-pecl-apcu-devel
+```
+
+Kemudian konfigurasi php-fpm buka file /etc/php.ini. Pada baris 
+```
+cgi.fix_pathinfo=1
+```
+dijadikan
+```
+cgi.fix_pathinfo=0
+```
+
+Ubah file www.conf dengan perintah
+```
+[centos@centos /]$ sudo vi /etc/php-fpm.d/www.conf
+```
+ubah pada bagian ini dari apache menjadi centos
+```
+user = centos
+group = centos
+listen.owner = centos
+listen.group = centos
+```
+Kemudian jalankan perintah berikut berurutan
+```
+[centos@centos /]$ sudo systemctl start php-fpm
+[centos@centos /]$ sudo systemctl enable php-fpm
+```
+
+Kalau sudah jalankan perintah ini untuk cek status
+```
+[centos@centos /]$ sudo systemctl status php-fpm
+```
+
+Setting Interface Kedua
+
+Install nmtui bila belum ada 
+```
+[centos@centos /]$ sudo yum  install NetworkManager-tui
+```
+Setelah selesai ketik perintah berikut untuk membuka
+```
+[centos@centos /]$ sudo nmtui
+```
+tampilanya seperti berikut
+
+![image](https://user-images.githubusercontent.com/109766098/180657527-11100aa4-b555-4074-84d0-fd6cb9de201e.png)
+
+
+

@@ -60,3 +60,33 @@ cek di /home/centos/ apakah sudah ada folder .ssh kalau belum ada dibuat dulu ka
 
 [centos@centos .ssh]$ cat authorized_keys
 Test lagi login ke ssh dengan perintah ssh -p 2255 centos@192.168.1.89 seharusnya sudah tidak meminta password lagi
+
+
+
+**Instal Nginx di CentOS**
+
+Paket Nginx tersedia di repositori EPEL, install epel dulu
+
+```
+sudo yum install epel-release
+```
+
+Instal Nginx dengan mengetikkan perintah yum berikut
+
+```
+sudo yum install nginx
+```
+
+Setelah instalasi selesai, aktifkan dan mulai layanan Nginx dengan 
+
+```
+sudo systemctl enable nginx
+sudo systemctl start nginx
+```
+
+Periksa status layanan Nginx dengan perintah berikut:
+
+```
+sudo systemctl status nginx
+```
+

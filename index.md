@@ -1,37 +1,62 @@
-## Welcome to GitHub Pages
+Setting IP static
 
-You can use the [editor on GitHub](https://github.com/CobaanBatin/rrattno-simulasi-2022/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Cek nmcli ada tidak
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+[centos@centos tmp]$ sudo rpm -qa | grep NetworkManager
+kalau tidak ada install
 
-### Markdown
+[centos@centos tmp]$ sudo yum install NetworkManager
+kemudian ditest
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+[centos@centos tmp]$ nmcli -h
+[centos@centos tmp]$ nmcli -p dev
+kalau muncul Error: NetworkManager is not running. dirun dulu
 
-```markdown
-Syntax highlighted code block
+[centos@centos tmp]$ systemctl start NetworkManager.service
+==== AUTHENTICATING FOR org.freedesktop.systemd1.manage-units ===
+Authentication is required to manage system services or units.
+Authenticating as: Cloud User (centos)
+Password:
+==== AUTHENTICATION COMPLETE ===
+coba run lagi harusnya tampil
 
-# Header 1
-## Header 2
-### Header 3
+[centos@centos tmp]$ nmcli -p dev
+=====================
+  Status of devices
+=====================
+DEVICE  TYPE      STATE                                  CONNECTION
+--------------------------------------------------------------------------------------------------
+eth0    ethernet  connected                              System eth0
+eth1    ethernet  connecting (getting IP configuration)  Wired connection 1
+lo      loopback  unmanaged
+konfigurasi ip
 
-- Bulleted
-- List
+[centos@centos tmp]$ sudo vi /etc/sysconfig/network-scripts/ifcfg-eth0
+isinya seperti berikut C:\Users\Ratno\ratno-xx\nama-simulasi-2022\gambar\Screenshot_2.jpg
 
-1. Numbered
-2. List
+Simpan dan restart service
 
-**Bold** and _Italic_ and `Code` text
+[centos@centos ~]$ systemctl restart network
+setelah itu diverifikasi
 
-[Link](url) and ![Image](src)
-```
+verifikasi setting IP baru
 
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
+[centos@centos ~]$ ip a s eth0
+verifikasi routing
 
-### Jekyll Themes
+[centos@centos ~]$ ip r
+verifikasi DNS server
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/CobaanBatin/rrattno-simulasi-2022/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+[centos@centos ~]$ cat /etc/resolv.conf
+verifikasi koneksi internet
 
-### Support or Contact
+[centos@centos ~]$ ping -c 4 google.com
+contoh hasilnya Membuat SSH keygen dan memasukkan autorized_key
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+Buka cmd dan ketik perintah dan enter semua sampai selesai
+
+C:\Windows\System32>ssh-keygen -t rsa
+cek di /home/centos/ apakah sudah ada folder .ssh kalau belum ada dibuat dulu kalau sudah ada di dalamnya buat file authorized_keys. File diset permission 600 dan folder .ssh diset 700. Isi file dengan public key (isi dari id_rsa.pub) bila sudah dicek dengan perintah
+
+[centos@centos .ssh]$ cat authorized_keys
+Test lagi login ke ssh dengan perintah ssh -p 2255 centos@192.168.1.89 seharusnya sudah tidak meminta password lagi

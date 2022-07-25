@@ -150,7 +150,6 @@ Setelah selesai kemudian install paket yum-utils. Jalankan perintah
 ```
 [centos@centos /]$ sudo yum install yum-utils
 ```
-XXXXXXX
 Install setiap versi php
 ```
 centos@centos ~]$ sudo yum install php73 php73-php php73-php-cli php73-php-mbstring php73-php-mcryp php73-php-cli php73-php-mysql php73-php-pdo php73-php-xml php73-php-common php73-php-fpm php73-php-devel

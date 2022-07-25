@@ -150,53 +150,193 @@ Setelah selesai kemudian install paket yum-utils. Jalankan perintah
 ```
 [centos@centos /]$ sudo yum install yum-utils
 ```
+XXXXXXX
+Install setiap versi php
+```
+centos@centos ~]$ sudo yum install php73 php73-php php73-php-cli php73-php-mbstring php73-php-mcryp php73-php-cli php73-php-mysql php73-php-pdo php73-php-xml php73-php-common php73-php-fpm php73-php-devel
+```
+```
+[centos@centos ~]$ sudo yum install php74 php74-php php74-php-cli php74-php-mbstring php74-php-mcryp php74-php-cli php74-php-mysql php74-php-pdo php74-php-xml php74-php-common php74-php-fpm php74-php-devel
+```
+```
+[centos@centos ~]$ sudo yum install php80 php80-php php80-php-cli php80-php-mbstring php80-php-mcryp php80-php-cli php80-php-mysql php80-php-pdo php80-php-xml php80-php-common php80-php-fpm php80-php-devel
+```
+Buat file tes.php untuk mengetes. Di dalamnya diisi
+```
+<?php
+phpinfo();
+?>
+```
+Kemudian jalankan pada setiap versi. Bila versi yang keluar sesuai maka berhasil
+![image](https://user-images.githubusercontent.com/109766098/180843036-7a415170-1f45-4b17-a22f-f557255871d3.png)
 
-Karena akan menggunakan php 7.3 7.4 dan 8.0 maka jalankan perintah
+Selanjutnya coba cek versi php bila keluarnya -bash: php: command not found maka ada satu versi php yang telah di install belum dijadikan default kompiler, cara untuk merubahnya dengan tool scl sebagai contoh php73
+```
+[centos@centos ~]$ scl enable php73 bash
+```
+Kalau hasilnya seperti berikut maka php73 sudah berjalan sebagai default system
+```
+[centos@centos ~]$ php -v
+PHP 7.3.33 (cli) (built: Jun  7 2022 08:45:21) ( NTS )
+Copyright (c) 1997-2018 The PHP Group
+Zend Engine v3.3.33, Copyright (c) 1998-2018 Zend Technologies
+```
+Kalau ditest seperti tadi hasilnya muncul 7.3
+```
+[centos@centos ~]$ php tes.php| grep "PHP Version"
+PHP Version => 7.3.33
+PHP Version => 7.3.33
+```
+Kemudian ditest via web. Webserver nginx untuk dapat membaca php dibutuhkan modul php-fpm yang sudah di install di awal tadi pada tiap versi php. Untuk mencobanya langkahnya pertama membuat folder web dengan perintah
+```
+[centos@centos ~]$ mkdir /home/centos/web
+```
+Masuk ke dalam folder tersebut dan buat 3 folder test1 test2 test3
+```
+[centos@centos web]$ mkdir test1 test2 test3
+```
+Konfigurasi setiap versi php untuk dapat diakses di web
+php73
+```
+[centos@centos web]$ sudo vi /etc/opt/remi/php73/php-fpm.d/www.conf
+```
+Pada bagian user dan group ganti dari apache menjadi nginx dan pada bagian listen diubah seperti berikut kemudian save dan keluar
+```
+ 20 ; Unix user/group of processes
+     21 ; Note: The user is mandatory. If the group is not set, the default user's group
+     22 ;       will be used.
+     23 ; RPM: apache user chosen to provide access to the same directories as httpd
+     24 user = nginx
+     25 ; RPM: Keep a group allowed to write in log dir.
+     26 group = nginx
+     27
+     28 ; The address on which to accept FastCGI requests.
+     29 ; Valid syntaxes are:
+     30 ;   'ip.add.re.ss:port'    - to listen on a TCP socket to a specific IPv4 address on
+     31 ;                            a specific port;
+     32 ;   '[ip:6:addr:ess]:port' - to listen on a TCP socket to a specific IPv6 address on
+     33 ;                            a specific port;
+     34 ;   'port'                 - to listen on a TCP socket to all addresses
+     35 ;                            (IPv6 and IPv4-mapped) on a specific port;
+     36 ;   '/path/to/unix/socket' - to listen on a unix socket.
+     37 ; Note: This value is mandatory.
+     38 listen = 127.0.0.1:9073
+```
+php74
+```
+[centos@centos web]$ sudo vi /etc/opt/remi/php74/php-fpm.d/www.conf
+```
+Pada bagian user dan group ganti dari apache menjadi nginx dan pada bagian listen diubah seperti berikut kemudian save dan keluar
+```
+  20 ; Unix user/group of processes
+     21 ; Note: The user is mandatory. If the group is not set, the default user's group
+     22 ;       will be used.
+     23 ; RPM: apache user chosen to provide access to the same directories as httpd
+     24 user = nginx
+     25 ; RPM: Keep a group allowed to write in log dir.
+     26 group = nginx
+     27
+     28 ; The address on which to accept FastCGI requests.
+     29 ; Valid syntaxes are:
+     30 ;   'ip.add.re.ss:port'    - to listen on a TCP socket to a specific IPv4 address on
+     31 ;                            a specific port;
+     32 ;   '[ip:6:addr:ess]:port' - to listen on a TCP socket to a specific IPv6 address on
+     33 ;                            a specific port;
+     34 ;   'port'                 - to listen on a TCP socket to all addresses
+     35 ;                            (IPv6 and IPv4-mapped) on a specific port;
+     36 ;   '/path/to/unix/socket' - to listen on a unix socket.
+     37 ; Note: This value is mandatory.
+     38 listen = 127.0.0.1:9074
+```
+php80
+```
+[centos@centos web]$ sudo vi /etc/opt/remi/php80/php-fpm.d/www.conf
+```
+Pada bagian user dan group ganti dari apache menjadi nginx dan pada bagian listen diubah seperti berikut kemudian save dan keluar
+```
+     20 ; Unix user/group of processes
+     21 ; Note: The user is mandatory. If the group is not set, the default user's group
+     22 ;       will be used.
+     23 ; RPM: apache user chosen to provide access to the same directories as httpd
+     24 user = nginx
+     25 ; RPM: Keep a group allowed to write in log dir.
+     26 group = nginx
+     27
+     28 ; The address on which to accept FastCGI requests.
+     29 ; Valid syntaxes are:
+     30 ;   'ip.add.re.ss:port'    - to listen on a TCP socket to a specific IPv4 address on
+     31 ;                            a specific port;
+     32 ;   '[ip:6:addr:ess]:port' - to listen on a TCP socket to a specific IPv6 address on
+     33 ;                            a specific port;
+     34 ;   'port'                 - to listen on a TCP socket to all addresses
+     35 ;                            (IPv6 and IPv4-mapped) on a specific port;
+     36 ;   '/path/to/unix/socket' - to listen on a unix socket.
+     37 ; Note: This value is mandatory.
+     38 listen = 127.0.0.1:9080
+```
+Jalankan php-fpm
+```
+[centos@centos ~]$ sudo service php73-php-fpm start
+```
+```
+[centos@centos ~]$ sudo service php74-php-fpm start
+```
+```
+[centos@centos ~]$ sudo service php80-php-fpm start
+```
 
+Konfigurasi file nginx.conf
+Setting nginx pada bagian loop server seperti ini
 ```
-[centos@centos /]$ sudo yum-config-manager --enable remi-php73
+location / {
+         }
+         location /test1 {
+         location ~ \.php$ {
+         try_files $uri =404;
+         fastcgi_split_path_info ^(.+\.php)(/.+)$;
+         fastcgi_pass 127.0.0.1:9073;
+         fastcgi_index index.php;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+         }
+         }
+         location /test2 {
+         location ~ \.php$ {
+         try_files $uri =404;
+         fastcgi_split_path_info ^(.+\.php)(/.+)$;
+         fastcgi_pass 127.0.0.1:9074;
+         fastcgi_index index.php;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+         }
+         }
+         location /test3 {
+         location ~ \.php$ {
+         try_files $uri =404;
+         fastcgi_split_path_info ^(.+\.php)(/.+)$;
+         fastcgi_pass 127.0.0.1:9080;
+         fastcgi_index index.php;
+         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+         include fastcgi_params;
+         }
+         }
+ ```
+cek apakah nginx sudah benar
+ ```
+ [centos@centos ~]$ sudo nginx -t
+ nginx: [warn] conflicting server name "localhost" on 0.0.0.0:80, ignored
+ nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+ nginx: configuration file /etc/nginx/nginx.conf test is successful
+ ```
+restart service nginx
 ```
+[centos@centos ~]$ sudo service nginx restart
 ```
-[centos@centos /]$ sudo yum-config-manager --enable remi-php74
+copy file tes.php ke folder test1 test2 test3 dengan nama index.php
 ```
-```
-[centos@centos /]$ sudo yum-config-manager --enable remi-php80
-```
-
-Setelah selesai lanjutkan installasi ekstensi yang perlu
-```
-[centos@centos /]$ sudo yum -y install php php-fpm php-mysqlnd php-zip php-devel php-gd php-mcrypt php-mbstring php-curl php-xml php-pear php-bcmath php-json php-pdo php-pecl-apcu php-pecl-apcu-devel
-```
-
-Kemudian konfigurasi php-fpm buka file /etc/php.ini. Pada baris 
-```
-cgi.fix_pathinfo=1
-```
-dijadikan
-```
-cgi.fix_pathinfo=0
-```
-
-Ubah file www.conf dengan perintah
-```
-[centos@centos /]$ sudo vi /etc/php-fpm.d/www.conf
-```
-ubah pada bagian ini dari apache menjadi centos
-```
-user = centos
-group = centos
-listen.owner = centos
-listen.group = centos
-```
-Kemudian jalankan perintah berikut berurutan
-```
-[centos@centos /]$ sudo systemctl start php-fpm
-[centos@centos /]$ sudo systemctl enable php-fpm
-```
-
-Kalau sudah jalankan perintah ini untuk cek status
-```
-[centos@centos /]$ sudo systemctl status php-fpm
+[centos@centos ~]$ cp -a tes.php /home/centos/web/test1/index.php
+[centos@centos ~]$ cp -a tes.php /home/centos/web/test2/index.php
+[centos@centos ~]$ cp -a tes.php /home/centos/web/test3/index.php
 ```
 
 Setting Interface Kedua

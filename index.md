@@ -354,9 +354,11 @@ tampilanya seperti berikut
 ![image](https://user-images.githubusercontent.com/109766098/180657527-11100aa4-b555-4074-84d0-fd6cb9de201e.png)
 
 setelah edit connection akan tampil seperti ini pilih add > ethernet
+
 ![image](https://user-images.githubusercontent.com/109766098/180867424-4fdd5492-06b8-4976-9407-1e69bdf3b4b2.png)
 
 isi pakai IP 2
+
 ![image](https://user-images.githubusercontent.com/109766098/180867643-5bbf711d-7ad8-4756-aef8-ac535bfa670b.png)
 
 

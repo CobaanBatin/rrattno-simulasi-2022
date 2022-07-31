@@ -52,6 +52,21 @@ konfigurasi ip
 ```
 [centos@centos tmp]$ sudo vi /etc/sysconfig/network-scripts/ifcfg-eth0
 ```
+Setting seperti ini
+```
+# Created by cloud-init on instance boot automatically, do not edit.
+#
+BOOTPROTO=none
+DEVICE=eth0
+ONBOOT=yes
+TYPE=Ethernet
+USERCTL=no
+IPADDR=10.141.0.55
+GATEWAY=10.141.0.1
+NETMASK=255.255.255.0
+DNS1=8.8.8.8
+DNS2=8.8.4.4
+```
 Simpan dan restart service
 ```
 [centos@centos ~]$ systemctl restart network
